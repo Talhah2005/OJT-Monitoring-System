@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <!-- Attendance Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Trainees</h5>
+                    <h2 class="display-4">{{ attendance_summary.total_trainees }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Present Today</h5>
+                    <h2 class="display-4">{{ attendance_summary.total_present }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-white shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Late Today</h5>
+                    <h2 class="display-4">{{ attendance_summary.total_late }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Attendance -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="card-title mb-0">Recent Attendance</h3>
+                <a href="{{ url_for('attendance_history') }}" class="btn btn-primary">
+                    <i class="fas fa-history"></i> View All
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in recent_attendance %}
+                        <tr>
+                            <td>{{ record.full_name }}</td>
+                            <td>{{ record.department }}</td>
+                            <td>{{ record.attendance_date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ record.checkin_time.strftime('%H:%M:%S') }}</td>
+                            <td>
+                                <span class="badge {% if record.attendance_type == 'Late' %}bg-warning{% else %}bg-success{% endif %}">
+                                    {{ record.attendance_type }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {% if record.attendance_status == 'Present' %}bg-success{% elif record.attendance_status == 'Late' %}bg-warning{% else %}bg-danger{% endif %}">
+                                    {{ record.attendance_status }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if not recent_attendance %}
+            <div class="alert alert-info text-center">
+                No recent attendance records found.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- QR Code Scanner Button -->
+    <div class="text-center mb-4">
+        <a href="{{ url_for('scan_qr') }}" class="btn btn-lg btn-primary">
+            <i class="fas fa-qrcode"></i> Scan Attendance QR Code
+        </a>
+    </div>
+</div>
+{% endblock %} 

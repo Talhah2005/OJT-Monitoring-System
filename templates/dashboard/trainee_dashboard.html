@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+<!-- <link rel="stylesheet" href="/static/css/styles.css" /> -->
+<head>
+    <style>
+  body {
+    background: white !important;
+  }
+
+  .card {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 600;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+  }
+
+  .btn-primary {
+    background-color: #667eea;
+    border: none;
+    font-weight: 600;
+  }
+
+  .btn-primary:hover {
+    background-color: #5a6fd8;
+  }
+
+  .badge {
+    padding: 0.4em 0.75em;
+    font-size: 0.75rem;
+    border-radius: 50px;
+    text-transform: uppercase;
+  }
+
+  .bg-success {
+    background-color: #48bb78 !important;
+  }
+
+  .bg-warning {
+    background-color: #ed8936 !important;
+  }
+
+  .bg-danger {
+    background-color: #f56565 !important;
+  }
+
+  .bg-info {
+    background-color: #4299e1 !important;
+  }
+
+  /* Proper spacing for QR code card */
+  .card.mb-4 {
+    margin-top: 1.5rem;
+  }
+
+  .list-group-item {
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .list-group-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Responsive behavior */
+  @media (max-width: 768px) {
+    .row.mb-4 {
+      flex-direction: column;
+    }
+    .col-md-6 {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+  /* Make QR code button larger and more prominent */
+  .qr-btn {
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .qr-btn:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #764ba2 100%);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+  .my-tasks-card {
+    background: #f8fafc !important;
+  }
+
+  /* QR Code Loading Animation */
+  .qr-loading {
+    display: none;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .qr-loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  #qrCodeDisplay {
+    display: none;
+    max-width: 200px;
+    margin: 20px auto;
+  }
+
+  .qr-container {
+    text-align: center;
+  }
+
+  .qr-info {
+    margin-top: 15px;
+    display: none;
+  }
+</style>
+<title>Trainee Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</head>
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Trainee Info -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Trainee Information</h5>
+        </div>
+        <div class="card-body">
+            <h4>{{ trainee.full_name }}</h4>
+            <p class="mb-1"><strong>Department:</strong> {{ trainee.department }}</p>
+            <p class="mb-1"><strong>Position:</strong> {{ trainee.position }}</p>
+            <p class="mb-0"><strong>Status:</strong> {{ trainee.training_status }}</p>
+        </div>
+    </div>
+
+    <!-- Today's Attendance -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Today's Attendance</h5>
+        </div>
+        <div class="card-body">
+            {% if today_attendance %}
+                <p><strong>Check-in Time:</strong> {{ today_attendance.checkin_time.strftime('%I:%M %p') }}</p>
+                {% if today_attendance.checkout_time %}
+                    <p><strong>Check-out Time:</strong> {{ today_attendance.checkout_time.strftime('%I:%M %p') }}</p>
+                {% else %}
+                    <p><strong>Check-out Time:</strong> Not checked out yet</p>
+                {% endif %}
+                <p><strong>Location:</strong> {{ today_attendance.location }}</p>
+            {% else %}
+                <p>No attendance recorded for today</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- QR Code Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Attendance QR Code</h5>
+        </div>
+        <div class="card-body text-center">
+            <a href="{{ qr_code_url }}" class="btn btn-primary">Generate/Show My QR Code</a>
+        </div>
+    </div>
+
+    <!-- Tasks Section -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">My Tasks</h5>
+        </div>
+        <div class="card-body">
+            {% if tasks %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                            <tr>
+                                <td>{{ task.task_name }}</td>
+                                <td>{{ task.task_type }}</td>
+                                <td>
+                                    {% if task.is_completed %}
+                                        <span class="badge badge-success">Completed</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if not task.is_completed %}
+                                        {% if task.task_type == 'quiz' %}
+                                            <a href="{{ task.task_url }}" class="btn btn-sm btn-primary">Take Quiz</a>
+                                        {% elif task.task_type == 'upload' %}
+                                            <button class="btn btn-sm btn-info" onclick="showUploadModal({{ task.task_id }})">Upload</button>
+                                        {% elif task.task_type == 'attendance' %}
+                                            <a href="{{ url_for('mark_attendance', task_id=task.task_id) }}" class="btn btn-sm btn-success">Mark Attendance</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No tasks assigned yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Upload Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Assignment</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Select File</label>
+                        <input type="file" class="form-control-file" name="assignment_file" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showUploadModal(taskId) {
+    const modal = $('#uploadModal');
+    const form = $('#uploadForm');
+    form.attr('action', `/trainee/upload-assignment/${taskId}`);
+    modal.modal('show');
+}
+
+// Auto-refresh attendance section every 5 minutes
+setInterval(function() {
+    location.reload();
+}, 300000);
+</script>
+{% endblock %} 

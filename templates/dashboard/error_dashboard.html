@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">Dashboard Error</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">An error occurred while loading the dashboard.</p>
+            {% if error %}
+            <div class="alert alert-danger">
+                <strong>Error details:</strong><br>
+                {{ error }}
+            </div>
+            {% endif %}
+            <div class="mt-4">
+                <a href="{{ url_for('home') }}" class="btn btn-primary">Return to Home</a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary ml-2">Try Again</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

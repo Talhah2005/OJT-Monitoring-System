@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4>QR Code Scanner</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Web Camera Scanner</h5>
+                    <div id="scanner-container" class="border p-2 mb-3" style="height: 300px;">
+                        <!-- Camera feed will appear here -->
+                        <video id="qr-video" width="100%" height="100%"></video>
+                    </div>
+                    <button id="start-scanner" class="btn btn-primary">Start Scanner</button>
+                    <button id="stop-scanner" class="btn btn-danger" disabled>Stop Scanner</button>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5>Manual Entry</h5>
+                    <form method="POST" action="{{ url_for('scan_qr') }}">
+                        <div class="mb-3">
+                            <label for="qr_data" class="form-label">QR Code Data</label>
+                            <input type="text" class="form-control" id="qr_data" name="qr_data" 
+                                   placeholder="Enter QR code data manually">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    
+                    <div class="mt-4">
+                        <h5>Scan Results</h5>
+                        <div id="scan-result" class="alert alert-info" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const scanner = new Instascan.Scanner({ video: document.getElementById('qr-video') });
+    const startBtn = document.getElementById('start-scanner');
+    const stopBtn = document.getElementById('stop-scanner');
+    const resultDiv = document.getElementById('scan-result');
+    
+    scanner.addListener('scan', function(content) {
+        resultDiv.style.display = 'block';
+        resultDiv.textContent = 'Scanned: ' + content;
+        document.getElementById('qr_data').value = content;
+    });
+    
+    startBtn.addEventListener('click', function() {
+        Instascan.Camera.getCameras().then(function(cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+            } else {
+                alert('No cameras found');
+            }
+        });
+    });
+    
+    stopBtn.addEventListener('click', function() {
+        scanner.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+    });
+});
+</script>
+{% endblock %}

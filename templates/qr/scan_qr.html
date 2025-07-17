@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan QR Code</title>
+    <style>
+        .scan-container {
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+        }
+        #scanner {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            border: 2px solid #333;
+        }
+        #result {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="scan-container">
+        <h2>Scan Trainee QR Code</h2>
+        <div id="scanner"></div>
+        <div id="result"></div>
+        <form id="attendance-form" method="POST" action="{{ url_for('mark_attendance_qr') }}">
+            <input type="hidden" name="qr_code" id="qr-code-input">
+            <input type="text" name="location" placeholder="Location (optional)">
+            <button type="submit">Submit Attendance</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+    <script>
+        const video = document.createElement('video');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const scanner = document.getElementById('scanner');
+        const result = document.getElementById('result');
+        const qrCodeInput = document.getElementById('qr-code-input');
+        
+        scanner.appendChild(video);
+        
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.setAttribute("playsinline", true);
+                video.play();
+                requestAnimationFrame(tick);
+            })
+            .catch(function(err) {
+                result.textContent = "Error accessing camera: " + err;
+            });
+        
+        function tick() {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                
+                if (code) {
+                    result.textContent = "QR Code detected: " + code.data;
+                    qrCodeInput.value = code.data;
+                }
+            }
+            requestAnimationFrame(tick);
+        }
+    </script>
+</body>
+</html>
