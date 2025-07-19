@@ -1,4 +1,4 @@
-# On Job Training Monitoring System
+# On Job Training Monitoring Syste
 The On-the-Job Training (OJT) Monitoring System is a comprehensive digital solution
 tailored to monitor and manage trainees, supervisors, and training sessions in educational
 and corporate environments. This system ensures structured management of attendance,
