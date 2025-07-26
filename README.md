@@ -19,11 +19,6 @@ It enables structured supervision of attendance, tasks, session progress, and tr
 
 ---
 
-## 📊 ER Diagram
-
-<img width="666" height="480" alt="ER Diagram" src="https://github.com/user-attachments/assets/3ceaa273-6388-4553-b430-832e2ad5535d" />
-
----
 
 ## 🧭 User Guide
 
@@ -93,6 +88,12 @@ Login and Register interface on application start.
 - 🔌 Create **RESTful APIs** for 3rd party integration
 - 📂 Implement **document uploads**, supervisor reviews, and feedback forms
 - 🔍 Add filters to **analyze historical trainee performance**
+
+---
+
+## 📊 ER Diagram
+
+<img width="666" height="480" alt="ER Diagram" src="https://github.com/user-attachments/assets/3ceaa273-6388-4553-b430-832e2ad5535d" />
 
 ---
 
