@@ -1,0 +1,54 @@
+<!-- templates/dashboard/supervisor_dashboard.html -->
+{% extends "base.html" %}
+<link rel="stylesheet" href="/static/css/styles.css" />
+{% block content %}
+<div class="container">
+    <h2>Supervisor Dashboard</h2>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Your Trainees</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for trainee in trainees %}
+                        <li class="list-group-item">
+                            {{ trainee.full_name }} - {{ trainee.position }}
+                            <span class="badge bg-{{ 'success' if trainee.training_status == 'Completed' else 'warning' }}">
+                                {{ trainee.training_status }}
+                            </span>
+                            <a href="{{ url_for('view_trainee_tasks', trainee_id=trainee.user_id) }}" class="btn btn-sm btn-primary float-end">
+                                View Tasks
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Tasks Assigned</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for task in recent_tasks %}
+                        <li class="list-group-item">
+                            {{ task.task_name }} ({{ task.task_type }})
+                            <span class="badge bg-{{ 'success' if task.is_completed else 'secondary' }}">
+                                {{ 'Completed' if task.is_completed else 'Pending' }}
+                            </span>
+                            <small class="text-muted float-end">{{ task.trainee_name }}</small>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

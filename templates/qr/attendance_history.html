@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title mb-4">
+                {% if is_trainee %}
+                    My Attendance History
+                {% else %}
+                    Trainees Attendance History
+                {% endif %}
+            </h2>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            {% if not is_trainee %}
+                            <th>Name</th>
+                            <th>Department</th>
+                            {% endif %}
+                            <th>Date</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            {% if not is_trainee %}
+                            <td>{{ record.full_name }}</td>
+                            <td>{{ record.department }}</td>
+                            {% endif %}
+                            <td>{{ record.attendance_date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ record.checkin_time.strftime('%H:%M:%S') }}</td>
+                            <td>
+                                {% if record.checkout_time %}
+                                    {{ record.checkout_time.strftime('%H:%M:%S') }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge {% if record.attendance_type == 'Late' %}bg-warning{% else %}bg-success{% endif %}">
+                                    {{ record.attendance_type }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {% if record.attendance_status == 'Present' %}bg-success{% elif record.attendance_status == 'Late' %}bg-warning{% else %}bg-danger{% endif %}">
+                                    {{ record.attendance_status }}
+                                </span>
+                            </td>
+                            <td>{{ record.location }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if not records %}
+            <div class="alert alert-info text-center">
+                No attendance records found.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
