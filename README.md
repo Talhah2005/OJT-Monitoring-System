@@ -8,13 +8,14 @@ It enables structured supervision of attendance, tasks, session progress, and tr
 
 ## 🛠 Tech Stack
 
-![Tech Stack](https://github.com/user-attachments/assets/47009a40-2a4b-4dce-8b58-e2da6aa34883)
+
 
 ---
 
 ## 📊 ER Diagram
 
-![ER Diagram](https://github.com/user-attachments/assets/582e0663-3211-4ce0-9111-3c9337f7b622)
+<img width="666" height="480" alt="image" src="https://github.com/user-attachments/assets/3ceaa273-6388-4553-b430-832e2ad5535d" />
+
 
 ---
 
@@ -23,21 +24,19 @@ It enables structured supervision of attendance, tasks, session progress, and tr
 ### 🔹 Main Dashboard  
 Login and Register interface on application start.
 
-![Main Dashboard](https://github.com/user-attachments/assets/317da171-d6cf-4e69-9c74-4edc04b362d9)  
-![Main Dashboard](https://github.com/user-attachments/assets/802760d1-cbd7-4775-b018-54f1ddb42c6f)  
-![Main Dashboard](https://github.com/user-attachments/assets/ca52c9c1-7c88-4f3a-bbbd-3be04a215111)
+<img width="944" height="491" alt="image" src="https://github.com/user-attachments/assets/a717b20e-23c1-4064-85fb-5f663eb77b5a" />
 
 ---
 
 ### 🔹 Registration Page
 
-![Register](https://github.com/user-attachments/assets/1db58144-988c-4d40-9ee3-cafb6ae989c1)
+<img width="944" height="585" alt="image" src="https://github.com/user-attachments/assets/33c2cc16-0f0c-4c3d-84c6-8fc373f8c566" />
 
 ---
 
 ### 🔹 Login Page
 
-![Login](https://github.com/user-attachments/assets/f942334c-be4f-40d9-9a64-34ec4c6ef7b2)
+<img width="946" height="538" alt="image" src="https://github.com/user-attachments/assets/54a8102d-d537-4337-8a50-c89f15157b12" />
 
 ---
 
@@ -49,9 +48,10 @@ Login and Register interface on application start.
 - View all attendance logs  
 - Access comprehensive dashboards  
 
-![Admin Panel](https://github.com/user-attachments/assets/3279950e-ba38-447e-a816-4dc0b73bf795)  
-![Admin Dashboard](https://github.com/user-attachments/assets/18d34d41-6a57-4b37-90a6-165385933c16)  
-![Admin Settings](https://github.com/user-attachments/assets/07d81e2d-c387-4347-88e7-7e3a0265d156)
+<img width="819" height="474" alt="image" src="https://github.com/user-attachments/assets/2a6aadd3-511d-49ee-9926-a4ed00b12193" />
+<img width="822" height="465" alt="image" src="https://github.com/user-attachments/assets/ee866f8c-0115-4b86-9444-a1670273438a" />
+<img width="828" height="354" alt="image" src="https://github.com/user-attachments/assets/c838defc-2511-463c-b259-5903d8569e17" />
+
 
 ---
 
@@ -60,8 +60,9 @@ Login and Register interface on application start.
 - Monitor trainee check-ins per session  
 - Give progress-based feedback  
 
-![Supervisor View](https://github.com/user-attachments/assets/c40b98ee-c583-4c1e-a657-4205e33d0d8c)  
-![Supervisor Panel](https://github.com/user-attachments/assets/f320c522-a3c8-430e-aa1e-156d9f3cd7f3)
+<img width="974" height="500" alt="image" src="https://github.com/user-attachments/assets/622307dc-8db5-4dd8-998a-dfca37beec48" />
+<img width="982" height="339" alt="image" src="https://github.com/user-attachments/assets/94be76df-3b13-474f-b5d5-ac0e56df0bc8" />
+
 
 ---
 
@@ -70,8 +71,9 @@ Login and Register interface on application start.
 - Upload tasks (quizzes, documents, etc.)  
 - Check-in via QR code  
 
-![Trainee Tasks](https://github.com/user-attachments/assets/11710e8d-c1d9-46c5-b603-74eee908813a)  
-![Trainee Dashboard](https://github.com/user-attachments/assets/59eec0d7-19b8-4528-b1a9-8611ee09317d)
+<img width="971" height="494" alt="image" src="https://github.com/user-attachments/assets/e4b130d8-09ab-4dff-9be7-5d5deae908c7" />
+<img width="972" height="454" alt="image" src="https://github.com/user-attachments/assets/0f46e100-5d47-4e9c-b7f7-31ccec3ffbcb" />
+
 
 > ✅ **QR codes** are generated in the trainee dashboard and used for session validation.  
 > 📱 The app is fully **mobile-responsive** and uses **Flask-Login** for role-based access control.
